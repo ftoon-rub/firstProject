@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import {StatusBar } from 'expo-status-bar';
 import * as Linking from 'expo-linking';
-import { Button, StyleSheet,ScrollView , Text, View } from 'react-native';
+import { Button, StyleSheet,ScrollView , Text, View, RefreshControl, FlatList } from 'react-native';
 
 const App = () => {
 
@@ -29,23 +29,132 @@ const App = () => {
   // }
 
   // ******************************** scrollView and refreshControl*****************************************
-  const [items, setItems] = useState([
-    {key: 1, item: 'item 1'},
-    {key: 2, item: 'item 2'},
-    {key: 3, item: 'item 3'},
-    {key: 4, item: 'item 4'},
+  // const [items, setItems] = useState([
+  //   {key: 1, item: 'item 1'},
+  //   {key: 2, item: 'item 2'},
+  //   {key: 3, item: 'item 3'},
+  //   {key: 4, item: 'item 4'},
+  //   {key: 5, item: 'item 5'},
+  //   {key: 6, item: 'item 6'},
+  //   {key: 7, item: 'item 7'},
+  //   {key: 8, item: 'item 8'},
+  //   {key: 9, item: 'item 9'},
+  //   {key: 10, item: 'item 10'},
+  //   {key: 11, item: 'item 11'},
+  //   {key: 12, item: 'item 12'},
+
+  // ])
+  // const [refresh,setRef] = useState(false)
+
+  // const onRefershing = () =>{
+  //   setRef(true)
+  //   setItems([...items,{key: 13, item: 'new item 13'}])
+  //   setRef(false)
+  // }
+
+  // ******************************** FlatList and SectionList*****************************************
+  // flatlist
+    const [refreshFlatList,setRefFlatList] = useState(false)
+
+  const onRefershingFlatList = () =>{
+    setRefFlatList(true)
+    setNames([...names,{key: '13', name: 'new name 13'}])
+    setRefFlatList(false)
+  }
+   const [names, setNames] = useState([
+    {key: '1,', name: 'name 1'},
+    {key: '2,', name: 'name 2'},
+    {key: '3,', name: 'name 3'},
+    {key: '4,', name: 'name 4'},
+    {key: '5,', name: 'name 5'},
+    {key: '6,', name: 'name 6'},
+    {key: '7,', name: 'name 7'},
+    {key: '8,', name: 'name 8'},
+    {key: '9,', name: 'name 9'},
+    {key: '10', name: 'name 10'},
+    {key: '11', name: 'name 11'},
+    {key: '12', name: 'name 12'},
+
   ])
+
+  // sectionList 
+  const DATA = [
+    {
+      title: 'Title 1',
+      data: ['item 1.1', 'item 1.2', 'item 1.3'],
+    },
+    {
+      title: 'Title 2',
+      data: ['item 2.1', 'item 2.2'],
+    },
+    {
+      title: 'Title 3',
+      data: ['item 3.1', 'item 3.2', 'item 3.3'],
+    },
+    {
+      title: 'Title 4',
+      data: ['item 4.1', 'item 4.2', 'item 4.3'],
+    },
+    {
+      title: 'Title 5',
+      data: ['item 5.1', 'item 5.2'],
+    },
+    {
+      title: 'Title 6',
+      data: ['item 6.1', 'item 6.2'],
+    },
+  ]
   
   return (
+    // ******************************** FlatList and SectionList*****************************************
+    // <FlatList
+    //   data={names}
+    //   renderItem={({item})=>{
+    //     return(
+    //       <View style = {styles.container} >
+    //       <Text style = {styles.item}>{item.name}</Text>
+    //       </View>
+    //      )
+    //   }} //act as map 
+    //   refreshControl={
+    //       <RefreshControl
+    //         refreshing={refreshFlatList}
+    //         onRefresh={onRefershingFlatList}
+    //       />
+    //     }
+    // />
 
+    <SectionList
+      keyExtractor={(item, index) => index.toString()}
+      sections={DATA}
+      renderItem={({item})=>{
+        return(
+          <View style = {styles.container} >
+          <Text style = {styles.item}>{item}</Text>
+          </View>
+         )
+      }} //act as map 
+    />
     // ******************************** scrollView and refreshControl*****************************************
-    <ScrollView style = {styles.container}>
-      {items.map((obj)=>{
-        <View key={object.key}>
-          <Text>{obj.item}</Text>
-        </View>
-      })}
-    </ScrollView>
+    // <ScrollView  style = {styles.body}
+    // refreshControl={
+    //   <RefreshControl
+    //         refreshing={refresh}
+    //         onRefresh={onRefershing}
+    //       />
+    // }>
+    //   {items.map((obj)=>{
+    //     return(
+    //       <View style = {styles.container} key={obj.key}>
+    //       <Text style = {styles.item}>{obj.item}</Text>
+    //     </View>
+    //     )
+      
+    //   })}
+    // </ScrollView>
+
+    // ******************************** FlatList and SectionList*****************************************
+
 
 
 
@@ -107,13 +216,20 @@ const App = () => {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  body:{
     flex: 1,
-    backgroundColor: '#fff',
+    flexDirection: 'column',
+  },
+  container: {
+    margin: 10,
+    backgroundColor: '#4ae1fa',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   item:{
     margin: 10,
-    backgroundColor: '#4ae1fa',
+    fontSize: 45,
+    color: 'black',
     justifyContent: 'center',
     alignItems: 'center',
   },
