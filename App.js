@@ -1,11 +1,11 @@
 import React,{useState} from 'react';
 import {StatusBar } from 'expo-status-bar';
 import * as Linking from 'expo-linking';
-import { Button, StyleSheet,ScrollView , Text, View, RefreshControl, FlatList } from 'react-native';
+import { Button, StyleSheet,ScrollView , Text, View, RefreshControl, FlatList,SectionList, TextInput, Alert ,Modal} from 'react-native';
 
 const App = () => {
 
-
+  // react native course:  https://www.youtube.com/watch?v=ANdSdIlgsEw
   // *********************state define state (name,session and flag)*****************************************
   const [name, setName]= useState('hi')//text 
   const [session, setSession] = useState({number: 1 , title: 'state'}) //obj
@@ -26,6 +26,31 @@ const App = () => {
   // const updateCounterClicks = ()=>{
   //   setCounter(counter+5)
   //   setClicks(clicks+1)
+  // }
+
+  //*********************************Exercise 3 FlatList & SectionList with Nested Array ***************************************************** */
+  //   const [refreshSectionList,setRefSectionList] = useState(false)
+  //   const [listCounter,setListCounter]=useState(3)
+
+  //   const [DATA,setData] = useState( [
+  //     {
+  //       title: 'Title 1',
+  //       data: ['item 1.1', 'item 1.2', 'item 1.3'],
+  //     },
+  //     {
+  //       title: 'Title 2',
+  //       data: ['item 2.1', 'item 2.2'],
+  //     },
+      
+  //   ])
+
+  // const onRefershingSectionList = () =>{
+  //   let itemNum = 1;
+
+  //   setRefSectionList(true)
+  //   setData([...DATA,{title: 'Title ' + listCounter ,data: ['item' + listCounter + '.'+ itemNum++,'item' + listCounter + '.'+ itemNum++, 'item' + listCounter + '.'+ itemNum++],}])
+  //   setListCounter(listCounter + 1)
+  //   setRefSectionList(false)
   // }
 
   // ******************************** scrollView and refreshControl*****************************************
@@ -54,58 +79,116 @@ const App = () => {
 
   // ******************************** FlatList and SectionList*****************************************
   // flatlist
-    const [refreshFlatList,setRefFlatList] = useState(false)
+  //   const [refreshFlatList,setRefFlatList] = useState(false)
 
-  const onRefershingFlatList = () =>{
-    setRefFlatList(true)
-    setNames([...names,{key: '13', name: 'new name 13'}])
-    setRefFlatList(false)
-  }
-   const [names, setNames] = useState([
-    {key: '1,', name: 'name 1'},
-    {key: '2,', name: 'name 2'},
-    {key: '3,', name: 'name 3'},
-    {key: '4,', name: 'name 4'},
-    {key: '5,', name: 'name 5'},
-    {key: '6,', name: 'name 6'},
-    {key: '7,', name: 'name 7'},
-    {key: '8,', name: 'name 8'},
-    {key: '9,', name: 'name 9'},
-    {key: '10', name: 'name 10'},
-    {key: '11', name: 'name 11'},
-    {key: '12', name: 'name 12'},
+  // const onRefershingFlatList = () =>{
+  //   setRefFlatList(true)
+  //   setNames([...names,{key: '13', name: 'new name 13'}])
+  //   setRefFlatList(false)
+  // }
+  //  const [names, setNames] = useState([
+  //   {key: '1,', name: 'name 1'},
+  //   {key: '2,', name: 'name 2'},
+  //   {key: '3,', name: 'name 3'},
+  //   {key: '4,', name: 'name 4'},
+  //   {key: '5,', name: 'name 5'},
+  //   {key: '6,', name: 'name 6'},
+  //   {key: '7,', name: 'name 7'},
+  //   {key: '8,', name: 'name 8'},
+  //   {key: '9,', name: 'name 9'},
+  //   {key: '10', name: 'name 10'},
+  //   {key: '11', name: 'name 11'},
+  //   {key: '12', name: 'name 12'},
 
-  ])
+  // ])
 
   // sectionList 
-  const DATA = [
-    {
-      title: 'Title 1',
-      data: ['item 1.1', 'item 1.2', 'item 1.3'],
-    },
-    {
-      title: 'Title 2',
-      data: ['item 2.1', 'item 2.2'],
-    },
-    {
-      title: 'Title 3',
-      data: ['item 3.1', 'item 3.2', 'item 3.3'],
-    },
-    {
-      title: 'Title 4',
-      data: ['item 4.1', 'item 4.2', 'item 4.3'],
-    },
-    {
-      title: 'Title 5',
-      data: ['item 5.1', 'item 5.2'],
-    },
-    {
-      title: 'Title 6',
-      data: ['item 6.1', 'item 6.2'],
-    },
-  ]
-  
+  // const DATA = [
+  //   {
+  //     title: 'Title 1',
+  //     data: ['item 1.1', 'item 1.2', 'item 1.3'],
+  //   },
+  //   {
+  //     title: 'Title 2',
+  //     data: ['item 2.1', 'item 2.2'],
+  //   },
+  //   {
+  //     title: 'Title 3',
+  //     data: ['item 3.1', 'item 3.2', 'item 3.3'],
+  //   },
+  // ]
+
+  //****************************Text Input & Keyboard******************************* */
+  // const [userName, setUserName] = useState('')
+
+  //*******************************Button, Touchables & Pressable And alert ********************** */
+  const [userName, setUserName] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+  const onPressHandler =()=>{
+    if(userName.length > 0){
+      setSubmitted(!submitted)
+    }else{
+      Alert.alert('warning', 'this field is required',[
+        {text: 'Do not show again' , onPress: () => console.warn('Do not show this again ')},
+        {text: 'Cancel' , onPress: () => console.warn('we will see you again')},
+        {text: 'OK' , onPress: () => console.warn('thank you')}
+    ], {cancelable: true ,onDismiss:()=> console.warn('alert dismissed')})
+    }
+    
+
+    // if(userName != ''){
+    //   setSubmitted(!submitted)
+    // }
+  }
+
+  //************************************modal ********************************** */
+  const [showModal, setShowModal] = useState(false)
+
   return (
+
+      //*******************************Button, Touchables & Pressable And modal ********************** */
+      <View style={styles.body}>
+        <Modal
+          visible={true}
+
+        >
+          <Text>the name is required</Text>
+        </Modal>
+        <Text style={styles.container} >
+          Please write your name:
+        </Text>
+        <TextInput
+          style={styles.input}
+          placeholder='e.g ftoon'
+          onChangeText={(value)=>{
+            setUserName(value)
+          }}
+        ></TextInput>
+        <Button 
+        title={submitted? 'clear' : 'submit'}
+        onPress={onPressHandler}
+        disabled ={submitted}
+        ></Button>
+        {submitted?<Text style={styles.text}>You are registered as {userName} {String(submitted)}</Text> : null}
+      </View>
+
+      //****************************Text Input & Keyboard******************************* */
+      // <View style={styles.body}>
+      //   <Text style={styles.container} >
+      //     Please write your name:
+      //   </Text>
+      //   <TextInput
+      //     style={styles.input}
+      //     placeholder='e.g ftoon'
+      //     onChangeText={(value)=>{
+      //       setUserName(value)
+      //     }}
+      //   ></TextInput>
+      //   <View>
+      //     <Text style={styles.item}>{userName}</Text>
+      //   </View>
+      // </View>
+
     // ******************************** FlatList and SectionList*****************************************
     // <FlatList
     //   data={names}
@@ -124,17 +207,25 @@ const App = () => {
     //     }
     // />
 
-    <SectionList
-      keyExtractor={(item, index) => index.toString()}
-      sections={DATA}
-      renderItem={({item})=>{
-        return(
-          <View style = {styles.container} >
-          <Text style = {styles.item}>{item}</Text>
-          </View>
-         )
-      }} //act as map 
-    />
+    // <SectionList
+    //   keyExtractor={(item, index) => index.toString()}
+    //   sections={DATA}
+    //   renderItem={({item})=>{
+    //     return(
+    //       <View >
+    //       <Text style = {styles.item}>{item}</Text>
+    //       </View>
+    //      )
+    //   }} //act as map 
+    //   renderSectionHeader = {({section})=>{
+    //     return(
+    //       <View style = {styles.container} >
+    //       <Text style = {styles.item}>{section.title}</Text>
+    //       </View>
+    //     )
+    //   }}
+    // />
+
     // ******************************** scrollView and refreshControl*****************************************
     // <ScrollView  style = {styles.body}
     // refreshControl={
@@ -152,10 +243,6 @@ const App = () => {
       
     //   })}
     // </ScrollView>
-
-    // ******************************** FlatList and SectionList*****************************************
-
-
 
 
     // <View style={styles.container}>
@@ -212,6 +299,34 @@ const App = () => {
     //     </View>
     //   </View>
     // </View>
+
+    //*********************Exercise 3 FlatList & SectionList with Nested Array *******************************
+    // <SectionList
+    //   sections={DATA}
+    //   keyExtractor = {(item, index)=> index.toString()}
+    //   renderItem = {({item})=>{
+    //     return(
+    //       <View>
+    //         <Text style={styles.item}>{item}</Text>
+    //       </View>
+    //     )
+    //   }}
+    //   renderSectionHeader = {({section})=>{
+    //     return(
+    //       <View style={styles.container}>
+    //         <Text style={styles.item}>{section.title}</Text>
+    //       </View>
+    //     )
+    //   }}
+    //   refreshControl = {
+    //     <RefreshControl
+    //       refreshing = {refreshSectionList}
+    //       onRefresh ={onRefershingSectionList}
+    //     />
+    //   }
+    // />
+
+    //************************************************************************************************************ */
   );
 }
 
@@ -219,6 +334,8 @@ const styles = StyleSheet.create({
   body:{
     flex: 1,
     flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   container: {
     margin: 10,
@@ -232,6 +349,15 @@ const styles = StyleSheet.create({
     color: 'black',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  input:{
+    marginBottom:10,
+    width: 200,
+    fontSize: 20,
+    borderWidth:1,
+    borderRadius:5,
+    textAlign: 'center',
+
   },
   // text:{
   //   color: '#FF0000',
