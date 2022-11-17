@@ -1,7 +1,8 @@
 import React,{useState} from 'react';
 import {StatusBar } from 'expo-status-bar';
 import * as Linking from 'expo-linking';
-import { Button, StyleSheet,ScrollView , Text, View, RefreshControl, FlatList,SectionList, TextInput, Alert ,Modal} from 'react-native';
+import { Button, StyleSheet,ScrollView , Text, View, RefreshControl, FlatList,SectionList, TextInput, Alert ,Modal,Image, ImageBackground} from 'react-native';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 
 const App = () => {
 
@@ -124,35 +125,63 @@ const App = () => {
   //*******************************Button, Touchables & Pressable And alert ********************** */
   const [userName, setUserName] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  // const onPressHandler =()=>{
+  //   if(userName.length > 0){
+  //     setSubmitted(!submitted)
+  //   }else{
+  //     Alert.alert('warning', 'this field is required',[
+  //       {text: 'Do not show again' , onPress: () => console.warn('Do not show this again ')},
+  //       {text: 'Cancel' , onPress: () => console.warn('we will see you again')},
+  //       {text: 'OK' , onPress: () => console.warn('thank you')}
+  //   ], {cancelable: true ,onDismiss:()=> console.warn('alert dismissed')})
+  //   }
+    
+
+  //   if(userName != ''){
+  //     setSubmitted(!submitted)
+  //   }
+  // }
+
+  //************************************modal ********************************** */
+  const [showModal, setShowModal] = useState(false)
   const onPressHandler =()=>{
     if(userName.length > 0){
       setSubmitted(!submitted)
     }else{
-      Alert.alert('warning', 'this field is required',[
-        {text: 'Do not show again' , onPress: () => console.warn('Do not show this again ')},
-        {text: 'Cancel' , onPress: () => console.warn('we will see you again')},
-        {text: 'OK' , onPress: () => console.warn('thank you')}
-    ], {cancelable: true ,onDismiss:()=> console.warn('alert dismissed')})
+     setShowModal(true)
     }
-    
-
-    // if(userName != ''){
-    //   setSubmitted(!submitted)
-    // }
   }
 
-  //************************************modal ********************************** */
-  const [showModal, setShowModal] = useState(false)
-
   return (
-
       //*******************************Button, Touchables & Pressable And modal ********************** */
       <View style={styles.body}>
         <Modal
-          visible={true}
-
+          visible={showModal}
+          onRequestClose ={()=>{
+            setShowModal(false)
+          }}
+          transparent={true}
         >
-          <Text>the name is required</Text>
+          <View style={styles.centerModal}>
+            <View style={styles.showModal}>
+              <View style={styles.warningModalTitle}>
+                <Text>
+                    WARNING
+                </Text>
+              </View>
+              <Text>the name is required</Text>
+              
+            </View>
+            <View style={styles.warningModalFooter}>
+                <Pressable
+                onPress={()=>{
+                  setShowModal(false)
+                }}
+                >
+                  <Text>Ok</Text>
+                </Pressable>
+              </View>
+          </View>
         </Modal>
         <Text style={styles.container} >
           Please write your name:
@@ -170,6 +199,7 @@ const App = () => {
         disabled ={submitted}
         ></Button>
         {submitted?<Text style={styles.text}>You are registered as {userName} {String(submitted)}</Text> : null}
+        {submitted? <Image resizeMode='stretch' style={styles.images} source={require('./assets/confirm.png')}></Image> : <Image resizeMode='stretch' style={styles.images} source={require('./assets/reject.jpg')}></Image>}
       </View>
 
       //****************************Text Input & Keyboard******************************* */
@@ -358,6 +388,39 @@ const styles = StyleSheet.create({
     borderRadius:5,
     textAlign: 'center',
 
+  },
+  centerModal:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "#00000020"
+  },
+  showModal:{
+    width: 300,
+    height: 300,
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: "black", 
+    borderRadius:20,
+  },
+  warningModalTitle:{
+    height: 50,
+    backgroundColor:"yellow",
+    justifyContent: 'center',
+    alignItems:'center',
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+
+  },
+  warningModalFooter:{
+    height:50,
+    backgroundColor: "blue",
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
+  },
+  images:{
+    height:100,
+    width:100,
   },
   // text:{
   //   color: '#FF0000',
